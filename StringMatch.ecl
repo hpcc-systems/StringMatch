@@ -96,13 +96,13 @@ EXPORT StringMatch := MODULE, FORWARD
             }
 
             unsigned int* column = new unsigned int[lenS1 + 1];
-            for (int y = 1; y <= lenS1; y++)
+            for (unsigned int y = 1; y <= lenS1; y++)
                 column[y] = y;
 
-            unsigned int lastdiag, olddiag;
-            for (int x = 1; x <= lenS2; x++) {
+            unsigned int olddiag;
+            for (unsigned int x = 1; x <= lenS2; x++) {
                 column[0] = x;
-                for (int y = 1, lastdiag = x-1; y <= lenS1; y++) {
+                for (unsigned int y = 1, lastdiag = x-1; y <= lenS1; y++) {
                     olddiag = column[y];
                     column[y] = Levenshtein_MIN3(column[y] + 1, column[y - 1] + 1, lastdiag + (s1[y - 1] == s2[x - 1] ? 0 : 1));
                     lastdiag = olddiag;
@@ -253,7 +253,6 @@ EXPORT StringMatch := MODULE, FORWARD
             unsigned int c1 = 0;
             unsigned int c2 = 0;
             unsigned int lcs = 0;
-            unsigned int temporaryDistance = 0;
             unsigned int maxOffset = 5;
 
             while ((c1 < lenS1) && (c2 < lenS2)) {
@@ -368,8 +367,8 @@ EXPORT StringMatch := MODULE, FORWARD
          *
          * @return      The "Closeness" of the two strings.  
          **************************************************************************/
-        EXPORT JaroWinkler(STRING s1, STRING s2, INTEGER4 prefixLength) := FUNCTION
-            REAL4 Winkler(STRING s1, STRING s2, REAL4 jaro, INTEGER4 prefixlength) := BEGINC++
+        EXPORT JaroWinkler(STRING s1, STRING s2, UNSIGNED4 prefixLength) := FUNCTION
+            REAL4 Winkler(STRING s1, STRING s2, REAL4 jaro, UNSIGNED4 prefixlength) := BEGINC++
             #option pure
                 #include <algorithm>
             #body
@@ -506,8 +505,8 @@ EXPORT StringMatch := MODULE, FORWARD
             int *swap = NULL;
             int maxSubstr = 0;
             int lastSubsBegin = 0;
-            for(int i = 0; i < lenS1; ++i) {
-                for(int j = 0; j < lenS2; ++j) {
+            for(unsigned int i = 0; i < lenS1; ++i) {
+                for(unsigned int j = 0; j < lenS2; ++j) {
                      if(s1[i] != s2[j]) {
                          curr[j] = 0;
                      } else {
